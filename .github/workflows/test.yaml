@@ -9,12 +9,11 @@ jobs:
     name: Dump info
     runs-on: ubuntu-latest
     outputs:
-      runRelease: ${{ contains(fromJSON(steps.PR.outputs.pr).labels.*.name, 'release') }}
+      runRelease: ${{ steps.PR.outputs.pr && contains(fromJSON(steps.PR.outputs.pr).labels.*.name, 'release') }}
     steps:
       - uses: 8BitJonny/gh-get-current-pr@2.2.0
         id: PR
       - run: |
-          echo ${{ steps.PR.outputs.pr }}
           echo ${{ needs.releaseInfo.outputs.runRelease }}
   createRelease:
     needs: releaseInfo
