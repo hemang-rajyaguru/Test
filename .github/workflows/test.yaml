@@ -1,0 +1,24 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  releaseInfo:
+    name: Dump info
+    runs-on: ubuntu-latest
+    outputs:
+      runRelease: ${{ contains(fromJSON(steps.PR.outputs.pr).labels.*.name, 'release') }}
+    steps:
+      - uses: 8BitJonny/gh-get-current-pr@2.2.0
+        id: PR
+      - run: |
+          echo ${{ needs.releaseInfo.outputs.runRelease }}
+  createRelease:
+    needs: releaseInfo
+    if: needs.releaseInfo.outputs.runRelease
+    runs-on: ubuntu-latest
+    steps:
+         - run: |
+            echo ${{ needs.releaseInfo.outputs.runRelease }}
