@@ -17,7 +17,7 @@ jobs:
           echo ${{ needs.releaseInfo.outputs.runRelease }}
   createRelease:
     needs: releaseInfo
-    if: needs.releaseInfo.outputs.runRelease
+    if: needs.releaseInfo.outputs.runRelease == true
     runs-on: ubuntu-latest
     steps:
          - run: |
