@@ -8,21 +8,15 @@ jobs:
   releaseInfo:
     name: Dump info
     runs-on: ubuntu-latest
-    outputs:
-      runRelease: ${{ steps.PR.outputs.pr && contains(fromJSON(steps.PR.outputs.pr).labels.*.name, 'release') }}
     steps:
       - uses: 8BitJonny/gh-get-current-pr@2.2.0
         id: PR
       - run: |
           echo ${{ needs.releaseInfo.outputs.runRelease }}
-      - run: echo "PR ${prNumber} ${prTitle} at ${prUrl} is ${prJSON}"
+      - run: echo "PR Label is: ${prLabel}"
         if: steps.PR.outputs.pr_found == 'true'
+        run: |
+            echo ${{ prLabel }}
         env:
           prLabel: ${{ steps.PR.outputs.pr_labels }}
-  createRelease:
-    needs: releaseInfo
-    if: needs.releaseInfo.outputs.runRelease
-    runs-on: ubuntu-latest
-    steps:
-         - run: |
-            echo ${{ needs.releaseInfo.outputs.runRelease }}
+
