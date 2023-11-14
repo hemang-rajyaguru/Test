@@ -13,7 +13,7 @@ jobs:
         id: PR
 
       - name: "check for release"
-        if: steps.PR.outputs.pr_found == 'true'
+        if: steps.PR.outputs.pr_found == 'true' && steps.PR.outputs.pr_labels == 'release'
         run: |
             echo ${{ steps.PR.outputs.pr_labels }}
         env:
