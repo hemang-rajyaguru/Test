@@ -15,6 +15,6 @@ jobs:
       - name: "check for release"
         if: steps.PR.outputs.pr_found == 'true'
         run: |
-            echo ${{ prLabel }}
+            echo ${{ steps.PR.outputs.pr_labels }}
         env:
           prLabel: ${{ steps.PR.outputs.pr_labels }}
