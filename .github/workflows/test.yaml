@@ -13,7 +13,11 @@ jobs:
     steps:
       - uses: 8BitJonny/gh-get-current-pr@2.2.0
         id: PR
+      - name: "check for release"
+        run: |
+            echo ${{ steps.PR.outputs.pr_found == 'true' && steps.PR.outputs.pr_labels == 'release' }}
 
+          
   createRelease:
     needs: releaseInfo
     if: needs.releaseInfo.outputs.runRelease == true
