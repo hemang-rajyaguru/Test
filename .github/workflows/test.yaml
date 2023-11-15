@@ -8,13 +8,25 @@ jobs:
   releaseInfo:
     name: Dump info
     runs-on: ubuntu-latest
+    outputs:
+      runRelease: ${{ steps.PR.outputs.pr_found == 'true' && steps.PR.outputs.pr_labels == 'release' }}
     steps:
       - uses: 8BitJonny/gh-get-current-pr@2.2.0
         id: PR
 
       - name: "check for release"
-        if: steps.PR.outputs.pr_found == 'true' && steps.PR.outputs.pr_labels == 'release'
         run: |
-            echo ${{ steps.PR.outputs.pr_labels }}
+            echo ${{ steps.PR.outputs.pr_found == 'true' && steps.PR.outputs.pr_labels == 'release' }}
+            echo "{prLabel}=${{ steps.PR.outputs.pr_labels }}" >> "$GITHUB_OUTPUT"
         env:
           prLabel: ${{ steps.PR.outputs.pr_labels }}
+          
+  createRelease:
+    needs: releaseInfo
+    if: needs.releaseInfo.outputs.runRelease == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Execute Release"
+        run: |
+          echo ${{ steps.PR.outputs.pr_labels }}
+          echo "{prLabel}=${{ steps.PR.outputs.pr_labels }}" >> "$GITHUB_OUTPUT"
