@@ -20,7 +20,7 @@ jobs:
           
   createRelease:
     needs: releaseInfo
-    if: needs.releaseInfo.outputs.runRelease == true
+    if: needs.releaseInfo.outputs.runRelease == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: "Execute Release"
